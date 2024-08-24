@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Place Order</title>
+    <link
+      rel="icon"
+      href="/images/WoodChain Logo.png"
+      type="image/x-icon"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <!-- Bootstrap-datepicker CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/css/public.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/css/placeorder.css"
+    />
+  </head>
+
+  <body>
+    <!-- Navigation Bar -->
+    <%-include('../partials/navbar') %>
+    <!-- End of Navigation Bar -->
+    <form
+      action="/user/placeorder"
+      method="POST"
+    >
+      <!-- Review and Submit Order Section -->
+      <div class="container">
+        <h2 class="py-5">Review and Submit Order</h2>
+
+        <h4 class="fw-bold">Order Details</h4>
+        <div>
+          <p>
+            <span class="label-bold">Supplier:</span>
+            <span class="text-muted"><%= supplier.companyName %></span>
+          </p>
+          <p>
+            <span class="label-bold">Date:</span>
+            <span class="text-muted"><%= currentDate %></span>
+          </p>
+        </div>
+
+        <!-- Select Delivery Date -->
+        <div class="row g-3 align-items-center">
+          <div class="col-auto">
+            <label class="col-form-label label-bold">Delivery Date:</label>
+          </div>
+          <div class="col-auto">
+            <input
+              id="delivery-date"
+              name="deliveryDate"
+              class="form-control"
+              placeholder="Select Delivery Date"
+              required
+              readonly
+            />
+          </div>
+        </div>
+        <div
+          id="delivery-date-error"
+          class="text-danger"
+          style="display: none"
+        >
+          Please select the delivery date first
+        </div>
+        <!-- End of Select Delivery Date -->
+
+        <!-- Order Summary Table -->
+        <div class="container mt-3">
+          <table
+            class="table table-hover table-borderless caption-top text-center"
+          >
+            <caption>
+              Order Summary
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Product ID</th>
+                <th scope="col">Product</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price/each</th>
+                <th scope="col">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% let grandTotal = 0; %> <% orderDetails.forEach(function(item) {
+              %>
+              <tr>
+                <th scope="row"><%= item.productID || 'Unknown ID' %></th>
+                <td><%= item.productName || 'Unknown Product' %></td>
+                <td><%= item.quantity || 0 %></td>
+                <td>
+                  RM <%= item.productPrice ? item.productPrice.toFixed(2) :
+                  '0.00' %>
+                </td>
+                <td>
+                  RM <%= item.productPrice && item.quantity ? (item.productPrice
+                  * item.quantity).toFixed(2) : '0.00' %>
+                </td>
+                <% grandTotal += item.productPrice * item.quantity; %>
+              </tr>
+              <% }); %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <th
+                  scope="row"
+                  colspan="4"
+                >
+                  Grand Total:
+                </th>
+                <td>RM <%= grandTotal.toFixed(2) %></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+        <!-- End of Order Summary Table -->
+
+        <!-- Place Order Button -->
+        <div class="row justify-content-center">
+          <div class="col-9">
+            <div class="d-grid">
+              <input
+                type="hidden"
+                name="orderDetails"
+                value="<%= JSON.stringify(orderDetails) %>"
+              />
+              <input
+                type="hidden"
+                name="supplierID"
+                value="<%= supplier.supplierID %>"
+              />
+              <input
+                type="hidden"
+                name="grandTotal"
+                value="<%= grandTotal.toFixed(2) %>"
+              />
+              <button
+                class="btn btn-primary btn-lg"
+                type="submit"
+              >
+                Place Order
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- End of Place Order Button -->
+    <!-- End of Review and Submit Order Section -->
+
+    <!-- Modal -->
+    <!-- Place Order Confirmation Modal -->
+    <div
+      class="modal fade"
+      id="confirmOrderModal"
+      tabindex="-1"
+      aria-labelledby="confirmOrderModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title"
+              id="confirmOrderModalLabel"
+            >
+              Confirm Your Order
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to place this order?
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="confirmOrderButton"
+            >
+              Confirm
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Place Order Confirmation Modal -->
+
+    <!-- Partial Modals -->
+    <%- include('../partials/usermodals') %> <%-
+    include('../partials/signoutmodal') %> <%-
+    include('../partials/uploadprofilephotomodal') %>
+    <!-- End of Partial Modals -->
+    <!-- End of Modal -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- Client Side JS -->
+    <script>
+      // Initialize the date picker for the delivery date input
+      $(document).ready(function () {
+        $("#delivery-date").datepicker({
+          format: "yyyy-mm-dd",
+          autoclose: true, // Automatically close the date picker after selecting a date
+          startDate: new Date(), // Set the minimum selectable date to today
+        });
+
+        // Form submission event
+        $("form").submit(function (event) {
+          event.preventDefault(); // Prevent the form from submitting immediately
+
+          var deliveryDate = $("#delivery-date").val();
+          if (!deliveryDate) {
+            $("#delivery-date-error").show(); // Show the error message
+
+            // Hide the error message after 2.5 seconds
+            setTimeout(function () {
+              $("#delivery-date-error").fadeOut("slow");
+            }, 2500);
+          } else {
+            // If the delivery date is selected, hide the error message
+            $("#delivery-date-error").hide();
+
+            // Show the confirmation modal
+            $("#confirmOrderModal").modal("show");
+          }
+        });
+
+        // Confirm order button event
+        $("#confirmOrderButton").click(function () {
+          // Submit the form if confirmed
+          $("form")[0].submit();
+        });
+      });
+
+      // Clear the sessionStorage when the form is submitted
+      document.addEventListener("DOMContentLoaded", () => {
+        const placeorderForm = document.querySelector(
+          'form[action="/user/placeorder"]'
+        );
+        if (placeorderForm) {
+          placeorderForm.addEventListener("submit", () => {
+            sessionStorage.clear();
+          });
+        }
+      });
+    </script>
+    <!-- End of Client Side JS -->
+  </body>
+</html>

@@ -1,0 +1,527 @@
+<!-- Supplier Profile Options Modal-->
+<div
+  class="modal fade"
+  id="profileOptionsModal"
+  tabindex="-1"
+  aria-labelledby="profileOptionsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="profileOptionsModalLabel"
+        >
+          Profile Options
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <%- include('../partials/profileInformation') %>
+        <p>Choose an action:</p>
+        <div class="d-grid gap-2">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#uploadModal"
+          >
+            Upload Photo
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#addCompanyDescriptionModal"
+          >
+            Add Company Description
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#signOutConfirmationModal"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Supplier Profile Options Modal -->
+
+<!-- Add Company Description Modal -->
+<div
+  class="modal fade"
+  id="addCompanyDescriptionModal"
+  tabindex="-1"
+  aria-labelledby="addCompanyDescriptionModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="addCompanyDescriptionModalLabel"
+        >
+          Add Company Description
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form
+          id="addCompanyDescriptionForm"
+          action="/supplier/updateDescription"
+          method="POST"
+        >
+          <div class="col-12">
+            <div class="form-floating mb-2">
+              <textarea
+                class="form-control"
+                name="company_description"
+                id="company_description"
+                placeholder="Company Description"
+                required
+                maxlength="300"
+                oninput="updateWordCount('company_description', 'company_description_word_count', 300)"
+              >
+<%= description %></textarea
+              >
+              <label for="company_description">Company Description</label>
+              <div
+                id="company_description_error"
+                class="invalid-feedback"
+              ></div>
+            </div>
+            <div class="text-end">
+              <small id="company_description_word_count">0/300</small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="validateCompanyDescription()"
+            >
+              Save Description
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Add Company Description Modal -->
+
+<!-- Add Product Modal -->
+<div
+  class="modal fade"
+  id="addproductModal"
+  tabindex="-1"
+  aria-labelledby="productModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="productModalLabel"
+        >
+          Add a Product to Your List
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <!-- Form with action to POST to /supplier/addProduct -->
+        <form
+          id="addProductForm"
+          action="/supplier/addProduct"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <div class="col-12">
+            <div class="form-floating mb-2">
+              <!-- Removed readonly from Product ID as it should not be manually entered -->
+              <input
+                type="text"
+                class="form-control"
+                name="product_name"
+                id="product_name"
+                placeholder="Product Name"
+                pattern=".*\S+.*"
+                title="Product name cannot be empty or only whitespace."
+                required
+                maxlength="255"
+              />
+              <label
+                for="product_name"
+                class="form-label"
+                >Product Name</label
+              >
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-floating mb-2">
+              <textarea
+                class="form-control"
+                name="product_description"
+                id="product_description"
+                placeholder="Product Description"
+                required
+                pattern=".*\S+.*"
+                title="Product description cannot be empty or only whitespace."
+                oninput="updateWordCount('product_description', 'product_description_word_count', 300)"
+              ></textarea>
+              <label
+                for="product_description"
+                class="form-label"
+                >Product Description</label
+              >
+              <div
+                id="product_description_error"
+                class="invalid-feedback"
+              ></div>
+            </div>
+            <div class="text-end">
+              <small id="product_description_word_count">0/300</small>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="form-floating mb-2">
+              <input
+                type="text"
+                class="form-control"
+                name="product_price"
+                id="product_price"
+                placeholder="Product Price"
+                required
+                pattern="^\d{1,6}(\.\d{2})?$"
+                title="Please enter a valid price with up to 6 digits and two decimal places (e.g., 123456.78)."
+              />
+              <label
+                for="product_price"
+                class="form-label"
+                >Product Price (RM)</label
+              >
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label
+              for="productPhoto"
+              class="form-label px-1"
+              >Choose a photo (PNG, JPG, JPEG):</label
+            >
+            <input
+              type="file"
+              class="form-control"
+              name="productPhoto"
+              id="productPhoto"
+              accept=".png, .jpg, .jpeg"
+            />
+          </div>
+
+          <!-- Submit button -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="validateAndShowConfirmation()"
+            >
+              Add Product
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Add Product Modal -->
+
+<!-- Add Product Confirmation Modal -->
+<div
+  class="modal fade"
+  id="confirmationModal"
+  tabindex="-1"
+  aria-labelledby="confirmationModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="confirmationModalLabel"
+        >
+          Confirm Add Product
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">Are you sure you want to add this product?</div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          id="confirmAddProductButton"
+        >
+          Yes, Add Product
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Add Prodcut Confirmation Modal -->
+
+<!-- Client Side JS -->
+<script>
+  // Wait until the DOM content is fully loaded
+  document.addEventListener("DOMContentLoaded", function () {
+    // Function to update word count for a textarea
+    function updateWordCount(textareaId, counterId, maxLength) {
+      const textarea = document.getElementById(textareaId);
+      const counter = document.getElementById(counterId);
+      const currentLength = textarea.value.length;
+      counter.textContent = `${currentLength}/${maxLength}`;
+    }
+
+    // Function to validate and submit the company description
+    function validateCompanyDescription() {
+      const companyDescription = document.getElementById("company_description");
+      const companyDescriptionError = document.getElementById(
+        "company_description_error"
+      );
+
+      // Remove previous error message and class if any
+      companyDescription.classList.remove("is-invalid");
+      companyDescriptionError.innerText = "";
+
+      // Check if the description is empty or only whitespace
+      if (!companyDescription.value.trim()) {
+        companyDescription.classList.add("is-invalid");
+        companyDescriptionError.innerText =
+          "Company description cannot be empty or only whitespace.";
+        companyDescription.focus();
+        return false;
+      }
+
+      // Check if the description exceeds the maximum length
+      if (companyDescription.value.length > 300) {
+        companyDescription.classList.add("is-invalid");
+        companyDescriptionError.innerText =
+          "Company description cannot exceed 300 characters.";
+        companyDescription.focus();
+        return false;
+      }
+
+      // If valid, submit the form
+      const form = document.getElementById("addCompanyDescriptionForm");
+      form.submit();
+    }
+
+    // Function to validate and show the confirmation modal before submitting the product form
+    function validateAndShowConfirmation() {
+      const form = document.getElementById("addProductForm");
+      const productDescription = document.getElementById("product_description");
+      const productDescriptionError = document.getElementById(
+        "product_description_error"
+      );
+
+      // Remove previous error message and class if any
+      productDescription.classList.remove("is-invalid");
+      if (productDescriptionError) {
+        productDescriptionError.remove();
+      }
+
+      // Check if the product description is empty or only whitespace
+      if (!productDescription.value.trim()) {
+        productDescription.classList.add("is-invalid");
+        const errorMessage = document.createElement("div");
+        errorMessage.id = "product_description_error";
+        errorMessage.className = "invalid-feedback";
+        errorMessage.innerText =
+          "Product description cannot be empty or only whitespace.";
+        productDescription.parentNode.appendChild(errorMessage);
+        productDescription.focus();
+        return false;
+      }
+
+      // If the form is valid, show the confirmation modal
+      if (form.checkValidity()) {
+        const addProductModal = bootstrap.Modal.getInstance(
+          document.getElementById("addproductModal")
+        );
+        const confirmationModal = new bootstrap.Modal(
+          document.getElementById("confirmationModal")
+        );
+
+        // Hide the add product modal and show the confirmation modal
+        addProductModal.hide();
+        addProductModal._element.addEventListener(
+          "hidden.bs.modal",
+          function () {
+            confirmationModal.show();
+          },
+          { once: true }
+        );
+
+        // When confirmation is clicked, submit the form
+        document.getElementById("confirmAddProductButton").onclick =
+          function () {
+            form.submit();
+          };
+
+        // If the confirmation modal is closed without submitting, show the add product modal again
+        document
+          .getElementById("confirmationModal")
+          .addEventListener("hidden.bs.modal", function () {
+            const confirmationModalInstance = bootstrap.Modal.getInstance(
+              document.getElementById("confirmationModal")
+            );
+            if (
+              confirmationModalInstance &&
+              !confirmationModalInstance._isShown
+            ) {
+              addProductModal.show();
+            }
+          });
+      } else {
+        form.reportValidity(); // Report form validity if invalid
+      }
+    }
+
+    // Function to remove all modal backdrops
+    function removeBackdrops() {
+      document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
+    }
+
+    // Function to manage modal backdrops
+    function manageBackdrops() {
+      const visibleModals = document.querySelectorAll(".modal.show");
+      if (visibleModals.length > 0) {
+        if (!document.querySelector(".modal-backdrop")) {
+          let backdrop = document.createElement("div");
+          backdrop.className = "modal-backdrop fade show";
+          document.body.appendChild(backdrop);
+        }
+      } else {
+        removeBackdrops();
+      }
+    }
+
+    // List of modals to manage backdrops for
+    const modals = [
+      "addCompanyDescriptionModal",
+      "confirmationModal",
+      "profileOptionsModal",
+      "addproductModal",
+      "uploadModal",
+      "signOutConfirmationModal",
+    ];
+
+    modals.forEach((modalId) => {
+      const modal = document.getElementById(modalId);
+      modal.addEventListener("hidden.bs.modal", manageBackdrops);
+      modal.addEventListener("shown.bs.modal", manageBackdrops);
+    });
+
+    document
+      .querySelector('[onclick="validateAndShowConfirmation()"]')
+      .addEventListener("click", validateAndShowConfirmation);
+
+    document
+      .querySelector('[onclick="validateCompanyDescription()"]')
+      .addEventListener("click", validateCompanyDescription);
+
+    // Initialize word counters on page load
+    document
+      .getElementById("company_description")
+      .addEventListener("input", function () {
+        updateWordCount(
+          "company_description",
+          "company_description_word_count",
+          300
+        );
+      });
+
+    document
+      .getElementById("product_description")
+      .addEventListener("input", function () {
+        updateWordCount(
+          "product_description",
+          "product_description_word_count",
+          300
+        );
+      });
+
+    // Call the function initially to set the correct word count on page load
+    updateWordCount(
+      "company_description",
+      "company_description_word_count",
+      300
+    );
+    updateWordCount(
+      "product_description",
+      "product_description_word_count",
+      300
+    );
+
+    manageBackdrops();
+  });
+</script>
+<!-- End of Client Side JS -->

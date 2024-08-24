@@ -1,0 +1,19 @@
+/* homme.css */
+
+  /* -------------------------------------------------------------------------------------- */
+  .container {
+    max-width: 900px; 
+    overflow: hidden; /* Prevent scrolling within the container */
+  }
+
+  .header {
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .list-group {
+    max-height: calc(100vh - 260px); 
+    overflow-y: auto; /* Enable scrolling for the supplier list */
+  }
+/* -------------------------------------------------------------------------------------- */
+

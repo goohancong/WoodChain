@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>LogIn</title>
+    <link
+      rel="icon"
+      href="/images/WoodChain Logo.png"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/css/public.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/public.js"></script>
+  </head>
+
+  <body>
+    <!-- Login 8 - Bootstrap Brain Component -->
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="height: 100vh"
+    >
+      <section class="p-3 p-md-4 p-xl-5">
+        <div class="container p-0 p-xl-3">
+          <div class="row justify-content-center">
+            <div class="col-12 col-xxl-11">
+              <div class="row g-0 g-sm-2">
+                <!-- Left Side-->
+                <div class="col-12 col-md-6">
+                  <img
+                    class="img-fluid rounded-start w-100 h-100 object-fit-cover"
+                    loading="lazy"
+                    src="/images/wood.png"
+                    alt="Welcome back you've been missed!"
+                  />
+                </div>
+                <!--End of Left Side-->
+
+                <!-- Right Side-->
+                <div
+                  class="col-12 col-md-6 d-flex align-items-center justify-content-center"
+                >
+                  <div class="col-12 col-lg-11 col-xl-10">
+                    <!--Title-->
+                    <div class="card-body p-3 p-md-4 pb-xl-3 pt-xl-5 m-0">
+                      <div class="row">
+                        <div class="col-12 row = 15">
+                          <h4
+                            class="text-center"
+                            style="font-size: 30px"
+                          >
+                            Welcome Back
+                          </h4>
+                          <h5
+                            class="text-center"
+                            style="font-size: 10px"
+                          >
+                            Log in to WoodChain
+                          </h5>
+                          <!-- Display error message -->
+                          <% if (typeof message !== 'undefined' && message &&
+                          message.length > 0) { %>
+                          <div
+                            class="alert alert-danger d-flex align-items-center"
+                            role="alert"
+                          >
+                            <%= message %>
+                          </div>
+                          <% } else { %> <% message = ''; %>
+                          <!-- Ensure message is always defined -->
+                          <% } %>
+                          <!-- End ofDisplay error message -->
+                        </div>
+                      </div>
+                    </div>
+                    <!--End of Title-->
+
+                    <!--Credential Part-->
+                    <form
+                      action="/login"
+                      method="POST"
+                    >
+                      <div class="row gy-3 overflow-hidden p-2">
+                        <div class="col-12"></div>
+                        <div class="col-12">
+                          <div class="form-floating mb-2">
+                            <input
+                              type="email"
+                              class="form-control"
+                              name="email"
+                              id="email"
+                              placeholder="name@example.com"
+                              required
+                              maxlength="255"
+                            />
+                            <label
+                              for="email"
+                              class="form-label"
+                              >Enter Your Email</label
+                            >
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="form-floating mb-2">
+                            <input
+                              type="password"
+                              class="form-control"
+                              name="password"
+                              id="password"
+                              value=""
+                              placeholder="Password"
+                              required
+                            />
+                            <label
+                              for="password"
+                              class="form-label"
+                              >Enter Your Password</label
+                            >
+                          </div>
+                        </div>
+                        <div class="col-12">
+                          <div class="d-grid">
+                            <button
+                              class="btn btn-primary btn-lg"
+                              type="submit"
+                            >
+                              Log In
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <!--End of Credential Part-->
+
+                    <!-- Signup Section -->
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="d-flex justify-content-center mt-5">
+                          <span class="link-secondary me-2"
+                            >New to WoodChain?
+                          </span>
+                          <a
+                            href="/main"
+                            class="link-secondary text-decoration-underline text-primary"
+                            >Sign up</a
+                          >
+                          <span class="link-secondary me-2"> &nbsp;now </span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End of Signup Section -->
+                  </div>
+                </div>
+                <!--End of Right Side-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

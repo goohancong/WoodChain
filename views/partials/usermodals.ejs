@@ -1,0 +1,59 @@
+<!-- User Profile Options Modal-->
+<div
+  class="modal fade"
+  id="profileOptionsModal"
+  tabindex="-1"
+  aria-labelledby="profileOptionsModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="profileOptionsModalLabel"
+        >
+          Profile Options
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <%- include('../partials/profileInformation') %>
+        <p>Choose an action:</p>
+        <div class="d-grid gap-2">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#uploadModal"
+          >
+            Upload Photo
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#signOutConfirmationModal"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of User Profile Options Modal -->

@@ -1,0 +1,71 @@
+<!-- NavBar -->
+<nav class="navbar navbar-expand-lg navbar-light">
+  <div class="container-fluid">
+    <a
+      class="navbar-brand me-auto"
+      href="<%= user && user.type === 'Supplier' ? '/supplier/supplierhome' : '/user/userhome' %>"
+      style="font-weight: bold"
+      >WoodChain</a
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      id="navbarNav"
+    >
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a
+            class="nav-link fw-bold"
+            aria-current="page"
+            href="<%= user && user.type === 'Supplier' ? '/supplier/supplierhome' : '/user/userhome' %>"
+            >Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link fw-bold"
+            href="<%= user && user.type === 'Supplier' ? '/supplier/supplierorder' : '/user/manageorder' %>"
+            >Manage Order</a
+          >
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a
+            class="nav-link"
+            href="#"
+            data-bs-toggle="modal"
+            data-bs-target="#profileOptionsModal"
+          >
+            <% if (typeof user !== 'undefined' && user.profilePhoto) { %>
+            <img
+              src="<%= user.profilePhoto %>"
+              alt="User Icon"
+              class="img-fluid rounded-circle"
+              style="width: 32px; height: 32px"
+            />
+            <% } else { %>
+            <img
+              src="/images/usericon.png"
+              alt="User Icon"
+              class="img-fluid rounded-circle"
+              style="width: 32px; height: 32px"
+            />
+            <% } %>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- End of NavBar -->

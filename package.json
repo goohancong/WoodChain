@@ -1,0 +1,48 @@
+{
+  "name": "woodchain",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-ganache": "ganache-cli --db ./ganache-db -p 7545 --gasLimit 8000000 --networkId 5777 --defaultBalanceEther 1000000 --mnemonic \"candy maple cake sugar pudding cream honey rich smooth crumble sweet treat\""
+  },
+  "keywords": [
+    "Supply Chain Management System",
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "Solidity",
+    "BootStrap",
+    "Truffle",
+    "EJS",
+    "NodeJS",
+    "Express",
+    "Web3",
+    "blockchain",
+    "sqlite",
+    "pdfkit",
+    "puppeteer",
+    "file-upload",
+    "session-management",
+    "authentication",
+    "smart-contracts",
+    "ganache"
+  ],
+  "author": "GOO HAN CONG 0133677",
+  "license": "ISC",
+  "description": "WoodChain, a blockchain supply chain system, aims to enhance and improve supply chain management in customization furniture industry. Besides that, the information of order and order status will be recorded to blockchain to ensure the transparency of transactioon on this system.",
+  "dependencies": {
+    "@truffle/contract": "^4.6.31",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "multer": "^1.4.5-lts.1",
+    "pdfkit": "^0.15.0",
+    "puppeteer": "^22.10.0",
+    "sqlite3": "^5.1.7",
+    "web3": "^1.10.0",
+    "web3-core-requestmanager": "^1.10.3"
+  }
+}

@@ -1,0 +1,41 @@
+<!-- Profile Information Placed within Profile Options Modal -->
+<div class="text-center">
+  <% if (typeof user !== 'undefined' && user.profilePhoto) { %>
+  <img
+    src="<%= user.profilePhoto %>"
+    alt="User Icon"
+    id="profile-photo"
+    class="img-fluid rounded-circle"
+    style="width: 60px; height: 60px"
+  />
+  <% } else { %>
+  <img
+    src="/images/usericon.png"
+    alt="User Icon"
+    id="profile-photo"
+    class="img-fluid rounded-circle"
+    style="width: 60px; height: 60px"
+  />
+  <% } %>
+
+  <!-- Display the company name if it exists -->
+  <% if (typeof user !== 'undefined' && user.companyName) { %>
+  <div
+    class="mt-2 font-weight-bold"
+    style="font-size: 14px"
+  >
+    <%= user.companyName %>
+  </div>
+  <% } %>
+
+  <!-- Display the company address if it exists -->
+  <% if (typeof user !== 'undefined' && user.companyAddress) { %>
+  <div
+    class="text-muted"
+    style="font-size: 12px"
+  >
+    <%= user.companyAddress %>
+  </div>
+  <% } %>
+</div>
+<!--End of Profile Information Placed within Profile Options Modal -->

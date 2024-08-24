@@ -1,0 +1,28 @@
+/* manageorder */
+
+/* -------------------------------------------------------------------------------------- */
+.container {
+    max-width: 900px; 
+    overflow: hidden; /* Prevent scrolling within the container */
+  }
+  
+  .header {
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  
+  .table-container {
+    max-height: calc(100vh - 250px); 
+    overflow-y: auto; /* Enable scrolling for the supplier list */
+  }
+  
+  .table-container table thead th {
+    position: sticky; /* Make the table header sticky */
+    top: 0; /* Stick to the top of the container */
+    background-color: #fff; 
+    z-index: 1; /* Ensure the header stays above the scrollable content */
+  }
+/* -------------------------------------------------------------------------------------- */
+    
+
+  

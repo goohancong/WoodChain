@@ -1,0 +1,73 @@
+/* selectproduct.css */
+
+/* -------------------------------------------------------------------------------------- */
+.product-container,
+.order-summary {
+  max-height: calc(95vh - 350px); /* Limit maximum height to 95% of viewport height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  height: auto;
+}
+
+.quantity-input .form-control {
+  width: 40px; /* Adjust the width of the input field */
+  padding: 0; /* Remove any padding */
+  height: 100%; /* Set the height to match the buttons */
+}
+
+/* Style for the order summary section */
+.order-summary ul.list-group {
+  border: none;
+}
+
+.order-summary ul.list-group .list-group-item {
+  border: none;
+  border-bottom: 1px solid #e9ecef;
+  padding: 10px 0;
+}
+
+.order-summary ul.list-group .list-group-item:last-child {
+  border-bottom: none;
+}
+
+.order-summary h2 {
+  font-weight: bold;
+}
+
+.order-summary button.btn {
+  font-size: 1rem;
+  padding: 10px 20px;
+}
+
+/* Adjust the delete button */
+.order-summary button.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.order-summary button.btn-danger i.bi-trash {
+  font-size: 1rem;
+}
+
+/* General product container style */
+.product-container .list-group-item {
+  border: none;
+  border-bottom: 1px solid #e9ecef;
+  padding: 15px 0;
+}
+
+.product-container .list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* Quantity input style */
+.quantity-input .btn {
+  font-size: 0.9rem;
+}
+
+.quantity-input .form-control {
+  width: 50px;
+  text-align: center;
+  font-size: 0.9rem;
+  margin: 0 5px;
+}
+/* -------------------------------------------------------------------------------------- */

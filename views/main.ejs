@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>WoodChain</title>
+    <link
+      rel="icon"
+      href="/images/WoodChain Logo.png"
+      type="image/x-icon"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/css/public.css"
+    />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/public.js"></script>
+  </head>
+
+  <body>
+    <!-- Login 8 - Bootstrap Brain Component -->
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="height: 100vh"
+    >
+      <section class="p-3 p-md-4 p-xl-5">
+        <div class="container p-0 p-xl-3">
+          <div class="row justify-content-center">
+            <div class="col-12 col-xxl-11">
+              <div class="row g-0 g-sm-2">
+                <!-- Left Side -->
+                <div class="col-12 col-md-6">
+                  <img
+                    class="img-fluid rounded-start w-100 h-100 object-fit-cover"
+                    loading="lazy"
+                    src="/images/wood.png"
+                    alt="Welcome back you've been missed!"
+                  />
+                </div>
+                <!-- End of Left Side -->
+
+                <!-- Right Side -->
+                <div
+                  class="col-12 col-md-6 d-flex align-items-center justify-content-center"
+                >
+                  <div class="col-12 col-lg-11 col-xl-10">
+                    <!--Title-->
+                    <div class="card-body p-4 p-md-5 pb-xl-3 pt-xl-5 m-0">
+                      <div class="row">
+                        <div class="col-12 row = 15">
+                          <h4
+                            class="text-center"
+                            style="font-size: 30px"
+                          >
+                            Welcome to WoodChain
+                          </h4>
+                          <h5
+                            class="text-center"
+                            style="font-size: 10px"
+                          >
+                            Let's get started by creating your account
+                          </h5>
+
+                          <!-- Display error message -->
+                          <% if (typeof message !== 'undefined' && message &&
+                          message.length > 0) { %>
+                          <div
+                            class="alert alert-danger d-flex align-items-center"
+                            role="alert"
+                          >
+                            <%= message %>
+                          </div>
+                          <% } else { %> <% message = ''; %>
+                          <!-- Ensure message is always defined -->
+                          <% } %>
+                          <!-- End of Display error message -->
+                        </div>
+                      </div>
+                    </div>
+                    <!-- End of Title -->
+
+                    <!-- Credential Part -->
+                    <form
+                      action="/signup"
+                      method="POST"
+                    >
+                      <div class="row gy-3 overflow-hidden p-2">
+                        <div class="form-group col-md-5 mb-2">
+                          <select
+                            id="inputState"
+                            class="form-control"
+                            name="userType"
+                            style="width: max-content"
+                            required
+                          >
+                            <option selected>Please Select User Type</option>
+                            <option value="User">User</option>
+                            <option value="Supplier">Supplier</option>
+                          </select>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="form-floating mb-2">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="companyAddress"
+                              id="companyAddress"
+                              placeholder="Company Address"
+                              pattern=".*\S+.*"
+                              title="Company Address cannot be empty or only whitespace."
+                              required
+                              maxlength="255"
+                            />
+                            <label
+                              for="companyAddress"
+                              class="form-label"
+                              >Company Address</label
+                            >
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="form-floating mb-2">
+                            <input
+                              type="text"
+                              class="form-control"
+                              name="companyName"
+                              id="companName"
+                              placeholder="Company Name"
+                              pattern=".*\S+.*"
+                              title="Company Name cannot be empty or only whitespace."
+                              required
+                              maxlength="255"
+                            />
+                            <label
+                              for="companyName"
+                              class="form-label"
+                              >Company Name</label
+                            >
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="form-floating mb-2">
+                            <input
+                              type="email"
+                              class="form-control"
+                              name="email"
+                              id="email"
+                              placeholder="name@example.com"
+                              required
+                              maxlength="255"
+                            />
+                            <label
+                              for="email"
+                              class="form-label"
+                              >Email</label
+                            >
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="form-floating mb-2">
+                            <input
+                              type="password"
+                              class="form-control"
+                              name="password"
+                              id="password"
+                              value=""
+                              placeholder="Password"
+                              pattern=".*\S+.*"
+                              title="Password cannot be empty or only whitespace and must be at least 8 characters long."
+                              required
+                              minlength="8"
+                              maxlength="255"
+                            />
+                            <label
+                              for="password"
+                              class="form-label"
+                              >Create Your Password</label
+                            >
+                          </div>
+                        </div>
+
+                        <div class="col-12">
+                          <div class="d-grid">
+                            <button
+                              class="btn btn-primary btn-lg"
+                              type="submit"
+                            >
+                              Join Now
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <!-- End of Credential Part -->
+
+                    <!-- Log In Section -->
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="d-flex justify-content-center mt-5">
+                          <span class="link-secondary me-2"
+                            >Already a Member?
+                          </span>
+                          <a
+                            href="/login"
+                            class="link-secondary text-decoration-underline text-primary"
+                            >Log In</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <!--End of Log In Section -->
+                  </div>
+                </div>
+                <!-- End of Right Side -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

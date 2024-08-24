@@ -1,0 +1,66 @@
+<!-- Sign Out Confirmation Modal -->
+<div
+  class="modal fade"
+  id="signOutConfirmationModal"
+  tabindex="-1"
+  aria-labelledby="signOutConfirmationModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="signOutConfirmationModalLabel"
+        >
+          Confirm Sign Out
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to sign out?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cancel
+        </button>
+        <!-- Form for logging out -->
+        <form
+          action="/logout"
+          method="POST"
+          style="display: inline"
+        >
+          <button
+            type="submit"
+            class="btn btn-danger"
+          >
+            Sign Out
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Sign Out Confirmation Modal -->
+
+<!-- Client Side JS -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const logoutForm = document.querySelector('form[action="/logout"]');
+    if (logoutForm) {
+      logoutForm.addEventListener("submit", () => {
+        // sessionStorage.clear(); // Clear the sessionStorage
+      });
+    }
+  });
+</script>
+<!-- End of Client Side JS -->

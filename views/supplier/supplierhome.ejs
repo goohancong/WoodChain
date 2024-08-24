@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Supplier Homepage</title>
+    <link
+      rel="icon"
+      href="/images/WoodChain Logo.png"
+      type="image/x-icon"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/css/public.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/css/home.css"
+    />
+  </head>
+
+  <body style="overflow: hidden">
+    <!-- Navigation Bar -->
+    <%- include('../partials/navbar') %>
+    <!-- End of Navigation Bar -->
+
+    <!-- Header, Search Bar, Add Product, and Product List Section -->
+    <div class="container">
+      <!-- Header and Search Bar -->
+      <h1 class="header sticky-top">Product List</h1>
+      <!-- Search Product Bar -->
+      <div class="search-bar input-group mb-3 sticky-top">
+        <form
+          action="/supplier/searchProducts"
+          method="POST"
+          class="d-flex w-100"
+        >
+          <input
+            type="text"
+            name="searchQuery"
+            class="form-control"
+            placeholder="Search product"
+            aria-label="Search product"
+            aria-describedby="button-addon2"
+            value="<%= searchQuery %>"
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="submit"
+            id="button-addon2"
+          >
+            Search
+          </button>
+        </form>
+      </div>
+      <!-- End of Search Product Bar -->
+      <!-- End of Header and Search Bar -->
+
+      <!-- Add Product -->
+      <div class="row justify-content-end pb-3">
+        <div class="col-auto">
+          <a
+            href="#"
+            class="link-secondary text-decoration-underline text-primary"
+            data-bs-toggle="modal"
+            data-bs-target="#addproductModal"
+          >
+            Add Product
+          </a>
+        </div>
+      </div>
+      <!-- End of Add Product -->
+
+      <!-- Product List -->
+      <ul class="list-group">
+        <% if (products && products.length > 0) { %> <%
+        products.forEach(function(product) { %>
+
+        <li
+          class="list-group-item d-flex align-items-center"
+          data-bs-toggle="modal"
+          data-bs-target="#manageProductModal<%= product.productID %>"
+        >
+          <div class="col-auto me-3">
+            <img
+              src="<%= product.productImage ? '/uploads/productphoto/' + product.productImage : '/images/producticon.png' %>"
+              alt="Product Icon"
+              class="img-fluid rounded-circle"
+              style="width: 32px; height: 32px"
+            />
+          </div>
+          <div class="col">
+            <h5 class="mb-0"><%= product.productName %></h5>
+            <p class="mb-0 text-muted">
+              <%= product.productDescription.length > 70 ?
+              product.productDescription.substring(0, 70) + '...' :
+              product.productDescription %>
+            </p>
+          </div>
+          <a
+            href="#"
+            class="stretched-link"
+          ></a>
+          <div class="row justify-content-end">
+            <div class="col-auto text-center"></div>
+            <span>RM <%= product.productPrice %> / each</span>
+          </div>
+        </li>
+        <% }); %> <% } else { %>
+        <li class="list-group-item">No products found.</li>
+        <% } %>
+      </ul>
+      <!-- End of Product List -->
+    </div>
+    <!-- End of Header, Search Bar, Add Product, and Product List Section -->
+
+    <!-- Modal -->
+    <% products.forEach(function(product) { %> <%-
+    include('../partials/manageproductmodal', {product: product}) %><% }); %>
+    <%-include('../partials/suppliermodals') %>
+    <%-include('../partials/signoutmodal') %>
+    <%-include('../partials/uploadprofilephotomodal') %>
+    <!-- End of Modal -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

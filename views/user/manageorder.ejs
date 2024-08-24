@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Manage Order</title>
+    <link
+      rel="icon"
+      href="/images/WoodChain Logo.png"
+      type="image/x-icon"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/css/public.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/css/manageorder.css"
+    />
+  </head>
+
+  <body style="overflow: hidden">
+    <!-- Navigation Bar -->
+    <%- include('../partials/navbar') %>
+    <!-- End of Navigation Bar -->
+
+    <!-- Header, Search Bar, and Orders Table Section -->
+    <div class="container">
+      <!-- Header and Search Bar -->
+      <h1 class="header sticky-top">Manage Orders</h1>
+      <!-- Search Order Bar -->
+      <div class="search-bar input-group mb-3 sticky-top">
+        <input
+          type="text"
+          id="searchOrderInput"
+          class="form-control"
+          placeholder="Search order by supplier name"
+          aria-label="Search order"
+          aria-describedby="button-addon2"
+          onkeydown="if (event.key === 'Enter') searchOrders()"
+        />
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="button-addon2"
+          onclick="searchOrders()"
+        >
+          Search
+        </button>
+      </div>
+      <!-- End of Search Order Bar -->
+      <!-- End of Header and Search Bar -->
+
+      <!-- Orders Table -->
+      <div class="table-container">
+        <table
+          class="table table-hover table-borderless caption-top text-center"
+        >
+          <caption>
+            Orders
+          </caption>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Supplier Name</th>
+              <th>Date</th>
+              <th>Delivery Date</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (orders.length === 0) { %>
+            <tr>
+              <td
+                colspan="6"
+                class="text-center text-muted"
+              >
+                No orders found.
+              </td>
+            </tr>
+            <% } else { %> <% orders.forEach(order => { %>
+            <tr
+              onclick="generateInvoice('<%= order.orderID %>', '<%= order.status %>')"
+              style="cursor: pointer"
+            >
+              <td><%= order.orderID %></td>
+              <td><%= order.supplierName %></td>
+              <td><%= order.date %></td>
+              <td><%= order.deliveryDate %></td>
+              <td><%= order.totalPrice %></td>
+              <td><%= order.status %></td>
+            </tr>
+            <% }); %> <% } %>
+          </tbody>
+        </table>
+      </div>
+      <!-- End of Orders Table -->
+    </div>
+    <!-- End of Header, Search Bar, and Orders Table Section -->
+
+    <!-- Message Container -->
+    <div
+      id="message-container"
+      class="position-fixed bottom-0 end-0 p-3"
+      style="z-index: 11"
+    ></div>
+    <!-- End of Message Container -->
+
+    <!-- Overlay Message for Invoice Generation -->
+    <div
+      id="loading-overlay"
+      class="position-fixed top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-none"
+      style="z-index: 1050"
+    >
+      <div class="d-flex justify-content-center align-items-center w-100 h-100">
+        <div
+          class="alert alert-info text-center"
+          role="alert"
+        >
+          Invoice is generating, please wait...
+        </div>
+      </div>
+    </div>
+    <!-- End of Overlay Message for Invoice Generation -->
+
+    <!-- Modals  -->
+    <!-- Modal for Unconfirmed Orders -->
+    <div
+      class="modal fade"
+      id="orderDetailsModal"
+      tabindex="-1"
+      aria-labelledby="orderDetailsModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5
+              class="modal-title fw-bold"
+              id="orderDetailsModalLabel"
+            >
+              Order Details
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div id="orderDetailsContent">
+              <!-- Order details will be injected here by JavaScript -->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Modal for Unconfirmed Orders -->
+
+    <!-- Partial Modals -->
+    <%- include('../partials/usermodals') %> <%-
+    include('../partials/signoutmodal') %> <%-
+    include('../partials/uploadprofilephotomodal') %>
+    <!-- End of Partial Modals -->
+    <!-- End of Modals -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Client Side JS -->
+    <script>
+      // Retrieves query parameters from the current URL
+      function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+          orderPlaced: params.get("orderPlaced"),
+        };
+      }
+
+      // Function to display message
+      function showMessage(message, type = "success") {
+        const messageContainer = document.getElementById("message-container");
+        const alertType =
+          type === "success" ? "alert-success" : "alert-warning";
+        messageContainer.innerHTML = `
+          <div class="alert ${alertType} alert-dismissible fade show" role="alert">
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        `;
+        setTimeout(() => {
+          messageContainer.innerHTML = "";
+        }, 2500);
+      }
+
+      // Check if order was placed successfully
+      window.addEventListener("DOMContentLoaded", (event) => {
+        const queryParams = getQueryParams();
+        if (queryParams.orderPlaced) {
+          showMessage(
+            "Order has been placed and recorded to blockchain successfully!",
+            "success"
+          );
+        }
+      });
+
+      // Function to show loading overlay
+      function showLoadingOverlay() {
+        const overlay = document.getElementById("loading-overlay");
+        overlay.classList.remove("d-none");
+      }
+
+      //Function to hide the loading overlay
+      function hideLoadingOverlay() {
+        const overlay = document.getElementById("loading-overlay");
+        overlay.classList.add("d-none");
+      }
+
+      // Function to generate invoice to show order details
+      async function generateInvoice(orderID, status) {
+        if (status !== "Confirmed") {
+          try {
+            const response = await fetch(
+              `/orderdetails/unconfirmed/${orderID}`
+            );
+            if (response.ok) {
+              const orderDetails = await response.json();
+              displayOrderDetails(orderDetails);
+              const orderDetailsModal = new bootstrap.Modal(
+                document.getElementById("orderDetailsModal")
+              );
+              orderDetailsModal.show();
+            } else {
+              showMessage("Failed to fetch order details.", "warning");
+            }
+          } catch (error) {
+            showMessage("Error fetching order details.", "warning");
+          }
+        } else {
+          showLoadingOverlay();
+          try {
+            const response = await fetch(`/orderdetails/${orderID}`);
+            if (response.ok) {
+              const blob = await response.blob();
+              const url = URL.createObjectURL(blob);
+              window.open(url);
+            } else {
+              showMessage("Failed to generate invoice.", "warning");
+            }
+          } catch (error) {
+            showMessage("Error generating invoice.", "warning");
+          } finally {
+            hideLoadingOverlay();
+          }
+        }
+      }
+
+      // Function to display order details in modal
+      function displayOrderDetails(orderDetails) {
+        const orderDetailsContent = document.getElementById(
+          "orderDetailsContent"
+        );
+        orderDetailsContent.innerHTML = `
+          <p><strong>Supplier Name:</strong> ${
+            orderDetails.supplierCompanyName
+          }</p>
+          <p><strong>Supplier Address:</strong> ${
+            orderDetails.supplierAddress
+          }</p>
+          <p><strong>Delivery Date:</strong> ${orderDetails.deliveryDate}</p>
+          <p><strong>Products:</strong></p>
+          <table class="table table-hover table-borderless caption-top text-center">
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${orderDetails.products
+                .map(
+                  (product) => `
+                <tr>
+                  <td>${product.productName}</td>
+                  <td>${product.quantity}</td>
+                  <td>${product.price}</td>
+                  <td>${product.totalPrice.toFixed(2)}</td>
+                </tr>
+              `
+                )
+                .join("")}
+            </tbody>
+          </table>
+          <p><strong>Grand Total:</strong> ${orderDetails.totalPrice.toFixed(
+            2
+          )}</p>
+        `;
+      }
+
+      // Function to search order
+      function searchOrders() {
+        const searchQuery = document.getElementById("searchOrderInput").value;
+        window.location.href = `/user/searchOrders?searchQuery=${encodeURIComponent(
+          searchQuery
+        )}`;
+      }
+    </script>
+    <!-- End of Client Side JS -->
+  </body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>User Homepage</title>
+    <link
+      rel="icon"
+      href="/images/WoodChain Logo.png"
+      type="image/x-icon"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/css/public.css"
+    />
+    <link
+      rel="stylesheet"
+      href="/css/home.css"
+    />
+  </head>
+
+  <body style="overflow: hidden">
+    <!-- Navigation Bar -->
+    <%- include('../partials/navbar') %>
+    <!-- End of Navigation Bar -->
+
+    <!-- Header, Search Bar, and Supplier List Section -->
+    <div class="container">
+      <!-- Header and Search Bar -->
+      <h1 class="header sticky-top">Supplier List</h1>
+      <!-- Search Supplier Bar -->
+      <div class="search-bar input-group mb-3 sticky-top">
+        <form
+          action="/user/searchSuppliers"
+          method="POST"
+          class="d-flex w-100"
+        >
+          <input
+            type="text"
+            name="searchQuery"
+            class="form-control"
+            placeholder="Search supplier"
+            aria-label="Search supplier"
+            aria-describedby="button-addon2"
+            value="<%= searchQuery || '' %>"
+          />
+          <button
+            class="btn btn-outline-secondary"
+            type="submit"
+            id="button-addon2"
+          >
+            Search
+          </button>
+        </form>
+      </div>
+      <!-- End of Search Supplier Bar -->
+
+      <!-- Supplier List -->
+      <ul class="list-group">
+        <% if (suppliers && suppliers.length > 0) { %> <%
+        suppliers.forEach(supplier => { %>
+        <li class="list-group-item d-flex align-items-center">
+          <div class="col-auto me-3">
+            <img
+              src="<%= supplier.profilePhoto ? supplier.profilePhoto : '/images/usericon.png' %>"
+              alt="Supplier Icon"
+              class="img-fluid rounded-circle"
+              style="width: 32px; height: 32px"
+            />
+          </div>
+          <div class="col">
+            <h5 class="mb-0"><%= supplier.companyName %></h5>
+            <p class="mb-0 text-muted">
+              <%= supplier.supplierDescription.length > 70 ?
+              supplier.supplierDescription.substring(0, 70) + '...' :
+              supplier.supplierDescription %>
+            </p>
+          </div>
+          <a
+            href="/user/selectproduct/<%= supplier.supplierID %>"
+            class="stretched-link"
+          ></a>
+        </li>
+        <% }); %> <% } else { %>
+        <li class="list-group-item">No suppliers found.</li>
+        <% } %>
+      </ul>
+      <!-- End of Supplier List -->
+    </div>
+    <!-- End of Header, Search Bar, and Supplier List Section -->
+
+    <!-- Partial Modals -->
+    <%- include('../partials/usermodals') %> <%-
+    include('../partials/signoutmodal') %> <%-
+    include('../partials/uploadprofilephotomodal') %>
+    <!-- End of Partial Modals -->
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,134 @@
+<!-- Profile Photo Upload Modal -->
+<div
+  class="modal fade"
+  id="uploadModal"
+  tabindex="-1"
+  aria-labelledby="uploadModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5
+          class="modal-title"
+          id="uploadModalLabel"
+        >
+          Upload Profile Photo
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form
+          id="uploadForm"
+          enctype="multipart/form-data"
+        >
+          <div class="mb-3">
+            <label
+              for="profilePhoto"
+              class="form-label"
+              >Choose a photo (PNG, JPG, JPEG):</label
+            >
+            <input
+              type="file"
+              class="form-control"
+              id="profilePhoto"
+              name="profilePhoto"
+              accept=".png, .jpg, .jpeg"
+              required
+            />
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Upload
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End of Profile Photo Upload Modal -->
+
+<!-- Client Side JS -->
+<script>
+  document
+    .getElementById("uploadForm")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const formData = new FormData(this);
+
+      fetch("/user/uploadProfilePhoto", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            console.log("Upload successful:", data.imagePath);
+            // Update the profile photo in the UI
+            const profilePhotoDisplayNavbar =
+              document.querySelector(".nav-link img");
+            const profilePhotoDisplayProfile =
+              document.getElementById("profile-photo");
+
+            if (profilePhotoDisplayNavbar) {
+              profilePhotoDisplayNavbar.src =
+                data.imagePath + "?" + new Date().getTime(); // Add a timestamp to avoid caching issues
+              console.log(
+                "Profile photo updated in navbar to:",
+                data.imagePath
+              );
+            } else {
+              console.error(
+                "Profile photo display element in navbar not found."
+              );
+            }
+
+            if (profilePhotoDisplayProfile) {
+              profilePhotoDisplayProfile.src =
+                data.imagePath + "?" + new Date().getTime(); // Add a timestamp to avoid caching issues
+              console.log(
+                "Profile photo updated in profile info to:",
+                data.imagePath
+              );
+            } else {
+              console.error(
+                "Profile photo display element in profile info not found."
+              );
+            }
+            // Close the modal
+            const uploadModal = bootstrap.Modal.getInstance(
+              document.getElementById("uploadModal")
+            );
+            if (uploadModal) {
+              uploadModal.hide();
+            } else {
+              console.error("Upload modal instance not found.");
+            }
+          } else {
+            alert(data.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          alert("An error occurred while uploading the profile photo.");
+        });
+    });
+</script>
+<!-- End of Client Side JS -->

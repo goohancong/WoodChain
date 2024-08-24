@@ -1,0 +1,67 @@
+/* placeorder.css */
+
+/* -------------------------------------------------------------------------------------- */
+.container {
+    max-width: auto; 
+    overflow: hidden; /* Prevent scrolling within the container */
+  }
+  .header {
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  
+.label-bold {
+  font-weight: bold;
+  font-size: 1.1rem; 
+}
+
+.col-form-label.label-bold {
+  font-weight: bold;
+  font-size: 1.1rem; 
+}
+
+  /* Custom styles for datepicker */
+  .datepicker-dropdown {
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  }
+  
+  .datepicker-dropdown table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .datepicker-dropdown table th,
+  .datepicker-dropdown table td {
+    padding: 1rem;
+    text-align: center;
+    border: 1px solid #ced4da;
+  }
+  
+  .datepicker-dropdown table th {
+    background-color: #f8f9fa;
+  }
+  
+  .datepicker-dropdown table td {
+    cursor: pointer;
+  }
+  
+  .datepicker-dropdown table td.today {
+    background-color: #e9ecef;
+  }
+  
+  .datepicker-dropdown table td.active,
+  .datepicker-dropdown table td.active:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .table tfoot tr {
+    border-top: 2px solid #000;
+  }
+  .table tbody td,
+  .table tbody th {
+    color: rgb(189, 192, 197);
+  }
+  /* -------------------------------------------------------------------------------------- */
